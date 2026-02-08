@@ -312,6 +312,17 @@
       animation: fall var(--fall-duration) linear forwards;
     }
 
+    .rain-icon {
+      position: absolute;
+      top: -40px;
+      width: 20px;
+      height: auto;
+      opacity: 0.9;
+      animation: fall var(--fall-duration) linear forwards;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+      pointer-events: none;
+    }
+
     @keyframes fall {
       to {
         transform: translateY(110vh) rotate(30deg);
@@ -416,14 +427,30 @@
       heart.addEventListener("animationend", () => heart.remove());
     }
 
+    function spawnIconRain() {
+      const icon = document.createElement("img");
+      icon.className = "rain-icon";
+      icon.src = Math.random() > 0.5 ? "elgato.png" : "doggo.png";
+      icon.alt = "";
+      icon.style.left = Math.random() * 100 + "vw";
+      icon.style.width = 14 + Math.random() * 18 + "px";
+      icon.style.setProperty("--fall-duration", 2.2 + Math.random() * 2.2 + "s");
+      icon.style.opacity = 0.55 + Math.random() * 0.35;
+      rainLayer.appendChild(icon);
+      icon.addEventListener("animationend", () => icon.remove());
+    }
+
     button.addEventListener("click", () => {
       if (yippee) {
         yippee.currentTime = 0;
         yippee.play().catch(() => {});
       }
-      const burst = 24;
+      const burst = 64;
       for (let i = 0; i < burst; i += 1) {
         setTimeout(spawnHeart, i * 60);
+      }
+      for (let i = 0; i < 36; i += 1) {
+        setTimeout(spawnIconRain, i * 90);
       }
       if (itineraryTimer) {
         clearTimeout(itineraryTimer);
