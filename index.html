@@ -63,6 +63,51 @@
       right: -90px;
     }
 
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-bg img {
+      position: absolute;
+      width: clamp(90px, 18vw, 150px);
+      height: auto;
+      opacity: 0.75;
+      filter: drop-shadow(0 6px 10px rgba(15, 5, 8, 0.4));
+      transform-origin: 50% 60%;
+    }
+
+    .bg-top-left {
+      top: 18px;
+      left: 18px;
+      transform: rotate(-12deg);
+    }
+
+    .bg-top-right {
+      top: 30px;
+      right: 20px;
+      transform: rotate(10deg);
+    }
+
+    .bg-bottom-left {
+      bottom: 22px;
+      left: 30px;
+      transform: rotate(8deg);
+    }
+
+    .bg-bottom-right {
+      bottom: 18px;
+      right: 28px;
+      transform: rotate(-10deg);
+    }
+
     h1 {
       margin: 0 0 12px;
       font-family: "Fraunces", "Georgia", serif;
@@ -76,28 +121,16 @@
       font-size: clamp(1rem, 2.3vw, 1.25rem);
     }
 
-    .border-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      width: 100%;
-      margin-top: 12px;
-    }
-
-    .border-stack {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .border-container img {
-      width: min(140px, 32vw);
-      height: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 8px 12px rgba(42, 11, 20, 0.2));
-      transform-origin: 50% 60%;
+    .bottom-note {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      margin: 0;
+      font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      z-index: 6;
     }
 
     .rock {
@@ -144,7 +177,7 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      z-index: 0;
+      z-index: 5;
     }
 
     .heart {
@@ -164,19 +197,29 @@
     }
 
     @media (max-width: 520px) {
-      .border-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 18px;
+      .card-bg img {
+        width: clamp(70px, 22vw, 120px);
+        opacity: 0.65;
       }
 
-      .border-stack {
-        flex: 1 1 120px;
+      .bg-top-left {
+        top: 10px;
+        left: 12px;
       }
 
-      .border-container img {
-        width: min(110px, 40vw);
+      .bg-top-right {
+        top: 16px;
+        right: 12px;
+      }
+
+      .bg-bottom-left {
+        bottom: 14px;
+        left: 16px;
+      }
+
+      .bg-bottom-right {
+        bottom: 12px;
+        right: 14px;
       }
     }
   </style>
@@ -190,20 +233,19 @@
     <source src="yippee.mp3" type="audio/mpeg">
   </audio>
   <main class="card" role="main" aria-label="Valentine message">
-    <h1>Will You Be My Valentine</h1>
-    <p>😁 It would make me very happy 😁.</p>
-    <div class="border-container">
-      <div class="border-stack">
-        <img src="elgato.png" alt="Cat illustration" class="rock">
-        <img src="doggo.png" alt="Dog illustration" class="rock">
-      </div>
+    <div class="card-bg" aria-hidden="true">
+      <img src="elgato.png" alt="" class="bg-top-left rock">
+      <img src="doggo.png" alt="" class="bg-top-right rock rock-reverse">
+      <img src="doggo.png" alt="" class="bg-bottom-left rock">
+      <img src="elgato.png" alt="" class="bg-bottom-right rock rock-reverse">
+    </div>
+    <div class="card-content">
+      <h1>Will You Be My Valentine</h1>
+      <p>😁 It would make me very happy 😁.</p>
       <button class="center-accent" type="button">Be Mine</button>
-      <div class="border-stack">
-        <img src="elgato.png" alt="Cat illustration" class="rock rock-reverse">
-        <img src="doggo.png" alt="Dog illustration" class="rock rock-reverse">
-      </div>
     </div>
   </main>
+  <p class="bottom-note">With love from...</p>
   <script>
     const button = document.querySelector(".center-accent");
     const rainLayer = document.querySelector(".heart-rain");
