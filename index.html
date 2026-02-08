@@ -221,11 +221,14 @@
 
     .popup-card {
       width: min(520px, 90vw);
+      max-height: min(78vh, 620px);
       background: #2b070f;
       color: var(--ink);
       border: 1px solid rgba(255, 157, 177, 0.35);
       border-radius: 18px;
       padding: 22px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
     }
 
@@ -237,6 +240,51 @@
 
     .popup-card p {
       margin: 0 0 16px;
+    }
+
+    .itinerary-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .itinerary-section {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 157, 177, 0.18);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .itinerary-section h3 {
+      margin: 0 0 10px;
+      font-family: "Fraunces", "Georgia", serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .itinerary-section img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .itinerary-section a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .itinerary-section a:hover {
+      text-decoration: underline;
+    }
+
+    .map-embed {
+      width: 100%;
+      height: 220px;
+      border: 0;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.25);
     }
 
     .popup-actions {
@@ -305,7 +353,7 @@
     </div>
     <div class="card-content">
       <h1>Will You Be My Valentine</h1>
-      <p>😁 It would make me very happy 😁.</p>
+      <p>💖 Please be mine this february 14th 💖.</p>
       <div class="button-stack">
         <button class="center-accent" type="button">Be Mine</button>
         <button class="center-accent itinerary-btn" type="button">Itinerary</button>
@@ -315,7 +363,17 @@
   <div class="popup" aria-hidden="true">
     <div class="popup-card" role="dialog" aria-modal="true" aria-label="Itinerary">
       <h2 class="popup-title">Itinerary</h2>
-      <p>Placeholder details go here. You can swap this for the real plan later.</p>
+      <div class="itinerary-grid">
+        <section class="itinerary-section">
+          <h3>Picnic</h3>
+          <img src="picnic.png" alt="Picnic area">
+        </section>
+        <section class="itinerary-section">
+          <h3>Dinner</h3>
+          <p><a href="https://www.shosho.com.au/" target="_blank" rel="noopener">Dinner at ShoSho Restaurant </a></p>
+          <iframe class="map-embed" title="Apple Maps Location" src="https://maps.apple.com/place?address=164%20King%20William%20Rd,%20Hyde%20Park%20SA%205061,%20Australia&coordinate=-34.955101,138.599793&name=Shosho&place-id=IFEF5B6D55AEE483D&map=explore"></iframe>
+        </section>
+      </div>
       <div class="popup-actions">
         <button class="center-accent popup-close" type="button">Close</button>
       </div>
