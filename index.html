@@ -18,6 +18,12 @@
       box-sizing: border-box;
     }
 
+    html,
+    body {
+      background-color: var(--bg-2);
+      height: 100%;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -30,7 +36,8 @@
       color: var(--ink);
       text-align: center;
       font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
-      padding: 48px 16px;
+      padding: calc(48px + env(safe-area-inset-top)) 16px calc(48px + env(safe-area-inset-bottom));
+      overscroll-behavior: none;
     }
 
     .card {
@@ -279,12 +286,16 @@
       text-decoration: underline;
     }
 
-    .map-embed {
+    .map-link {
+      display: block;
+    }
+
+    .map-preview {
       width: 100%;
-      height: 220px;
-      border: 0;
+      height: auto;
       border-radius: 10px;
-      background: rgba(0, 0, 0, 0.25);
+      display: block;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
     }
 
     .popup-actions {
@@ -362,7 +373,7 @@
   </main>
   <div class="popup" aria-hidden="true">
     <div class="popup-card" role="dialog" aria-modal="true" aria-label="Itinerary">
-      <h2 class="popup-title">Itinerary</h2>
+      <h2 class="popup-title">Itinerary for our day</h2>
       <div class="itinerary-grid">
         <section class="itinerary-section">
           <h3>Picnic</h3>
@@ -371,7 +382,9 @@
         <section class="itinerary-section">
           <h3>Dinner</h3>
           <p><a href="https://www.shosho.com.au/whats-on/valentines-day-at-shosho-1" target="_blank" rel="noopener">Dinner at ShoSho Restaurant </a></p>
-          <iframe class="map-embed" title="Apple Maps Location" src="https://maps.apple.com/place?address=164%20King%20William%20Rd,%20Hyde%20Park%20SA%205061,%20Australia&coordinate=-34.955101,138.599793&name=Shosho&place-id=IFEF5B6D55AEE483D&map=explore"></iframe>
+          <a class="map-link" href="https://maps.apple.com/place?address=164%20King%20William%20Rd,%20Hyde%20Park%20SA%205061,%20Australia&coordinate=-34.955101,138.599793&name=Shosho&place-id=IFEF5B6D55AEE483D&map=explore" target="_blank" rel="noopener">
+            <img class="map-preview" src="shosho_cap.png" alt="Map preview of ShoSho location">
+          </a>
         </section>
       </div>
       <div class="popup-actions">
