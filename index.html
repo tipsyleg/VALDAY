@@ -6,12 +6,12 @@
   <title>Be My Valentine</title>
   <style>
     :root {
-      --bg-1: #f3a7b5;
-      --bg-2: #ffd6dd;
-      --ink: #2a0b14;
-      --accent: #b71c3b;
-      --card: #fff5f7;
-      --shadow: rgba(42, 11, 20, 0.18);
+      --bg-1: #9f4555;
+      --bg-2: #750216;
+      --ink: #fff2f4;
+      --accent: #ff9db1;
+      --card: #560010;
+      --shadow: rgba(20, 5, 8, 0.35);
     }
 
     * {
@@ -24,9 +24,9 @@
       display: grid;
       place-items: center;
       background:
-        radial-gradient(900px 600px at 20% 20%, rgba(255, 255, 255, 0.35), transparent 60%),
-        radial-gradient(700px 500px at 80% 30%, rgba(255, 255, 255, 0.25), transparent 65%),
-        linear-gradient(140deg, var(--bg-1), var(--bg-2));
+        radial-gradient(900px 600px at 20% 20%, rgba(255, 255, 255, 0.15), transparent 60%),
+        radial-gradient(700px 500px at 80% 30%, rgba(255, 255, 255, 0.12), transparent 65%),
+        linear-gradient(150deg, var(--bg-1), var(--bg-2));
       color: var(--ink);
       text-align: center;
       font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
@@ -40,7 +40,7 @@
       border-radius: 28px;
       box-shadow: 0 16px 40px var(--shadow);
       padding: 48px 28px 36px;
-      border: 2px solid rgba(183, 28, 59, 0.15);
+      border: 2px solid rgba(255, 157, 177, 0.2);
       overflow: hidden;
     }
 
@@ -51,7 +51,7 @@
       width: 220px;
       height: 220px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(183, 28, 59, 0.12), transparent 70%);
+      background: radial-gradient(circle, rgba(255, 157, 177, 0.18), transparent 70%);
       top: -90px;
     }
 
@@ -123,16 +123,16 @@
       text-transform: uppercase;
       color: var(--accent);
       padding: 10px 18px;
-      border: 1px dashed rgba(183, 28, 59, 0.45);
+      border: 1px dashed rgba(255, 157, 177, 0.7);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.08);
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
     .center-accent:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(183, 28, 59, 0.18);
+      box-shadow: 0 8px 18px rgba(255, 157, 177, 0.25);
     }
 
     .center-accent:active {
@@ -165,7 +165,18 @@
 
     @media (max-width: 520px) {
       .border-container {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 18px;
+      }
+
+      .border-stack {
+        flex: 1 1 120px;
+      }
+
+      .border-container img {
+        width: min(110px, 40vw);
       }
     }
   </style>
