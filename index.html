@@ -172,12 +172,69 @@
       transform: translateY(1px) scale(0.98);
     }
 
+    .itinerary-btn {
+      margin-top: 16px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+    }
+
+    .itinerary-btn.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
     .heart-rain {
       position: fixed;
       inset: 0;
       pointer-events: none;
       overflow: hidden;
       z-index: 5;
+    }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(12, 4, 7, 0.65);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 10;
+    }
+
+    .popup.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .popup-card {
+      width: min(520px, 90vw);
+      background: #2b070f;
+      color: var(--ink);
+      border: 1px solid rgba(255, 157, 177, 0.35);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .popup-title {
+      margin: 0 0 8px;
+      font-family: "Fraunces", "Georgia", serif;
+      font-size: 1.4rem;
+    }
+
+    .popup-card p {
+      margin: 0 0 16px;
+    }
+
+    .popup-actions {
+      display: flex;
+      justify-content: center;
     }
 
     .heart {
@@ -243,13 +300,27 @@
       <h1>Will You Be My Valentine</h1>
       <p>😁 It would make me very happy 😁.</p>
       <button class="center-accent" type="button">Be Mine</button>
+      <button class="center-accent itinerary-btn" type="button">Itinerary</button>
     </div>
   </main>
+  <div class="popup" aria-hidden="true">
+    <div class="popup-card" role="dialog" aria-modal="true" aria-label="Itinerary">
+      <h2 class="popup-title">Itinerary</h2>
+      <p>Placeholder details go here. You can swap this for the real plan later.</p>
+      <div class="popup-actions">
+        <button class="center-accent popup-close" type="button">Close</button>
+      </div>
+    </div>
+  </div>
   <p class="bottom-note">With love from...</p>
   <script>
     const button = document.querySelector(".center-accent");
     const rainLayer = document.querySelector(".heart-rain");
     const yippee = document.querySelector("#yippee-audio");
+    const itineraryBtn = document.querySelector(".itinerary-btn");
+    const popup = document.querySelector(".popup");
+    const popupClose = document.querySelector(".popup-close");
+    let itineraryTimer = null;
 
     function spawnHeart() {
       const heart = document.createElement("span");
@@ -271,6 +342,32 @@
       const burst = 24;
       for (let i = 0; i < burst; i += 1) {
         setTimeout(spawnHeart, i * 60);
+      }
+      if (itineraryTimer) {
+        clearTimeout(itineraryTimer);
+      }
+      itineraryTimer = setTimeout(() => {
+        itineraryBtn.classList.add("is-visible");
+      }, 5000);
+    });
+
+    itineraryBtn.addEventListener("click", () => {
+      const answer = window.prompt("Password:");
+      if (answer && answer.toLowerCase() === "yes") {
+        popup.classList.add("is-open");
+        popup.setAttribute("aria-hidden", "false");
+      }
+    });
+
+    popupClose.addEventListener("click", () => {
+      popup.classList.remove("is-open");
+      popup.setAttribute("aria-hidden", "true");
+    });
+
+    popup.addEventListener("click", (event) => {
+      if (event.target === popup) {
+        popup.classList.remove("is-open");
+        popup.setAttribute("aria-hidden", "true");
       }
     });
   </script>
