@@ -226,6 +226,64 @@
       z-index: 10;
     }
 
+    .gate {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(12, 4, 7, 0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 11;
+    }
+
+    .gate.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .gate-card {
+      width: min(420px, 88vw);
+      background: #2b070f;
+      color: var(--ink);
+      border: 1px solid rgba(255, 157, 177, 0.35);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .gate-card p {
+      margin: 0 0 16px;
+    }
+
+    .gate-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+      min-height: 56px;
+    }
+
+    .gate-btn {
+      min-width: 120px;
+    }
+
+    .gate-card.shake {
+      animation: shake 0.28s ease;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-3px); }
+      100% { transform: translateX(0); }
+    }
+
     .popup.is-open {
       opacity: 1;
       pointer-events: auto;
@@ -388,6 +446,15 @@
       </div>
     </div>
   </main>
+  <div class="gate" aria-hidden="true">
+    <div class="gate-card" role="dialog" aria-modal="true" aria-label="Valentine choice">
+      <p>Will you be my Valentine?</p>
+      <div class="gate-actions">
+        <button class="center-accent gate-btn gate-yes" type="button">Yes</button>
+        <button class="center-accent gate-btn gate-no" type="button">No</button>
+      </div>
+    </div>
+  </div>
   <div class="popup" aria-hidden="true">
     <div class="popup-card" role="dialog" aria-modal="true" aria-label="Itinerary">
       <h2 class="popup-title">Itinerary for our day</h2>
@@ -412,12 +479,16 @@
   </div>
   <p class="bottom-note">Made with love</p>
   <script>
-    const button = document.querySelector(".center-accent");
+    const beMineBtn = document.querySelector(".center-accent");
     const rainLayer = document.querySelector(".heart-rain");
     const yippee = document.querySelector("#yippee-audio");
     const itineraryBtn = document.querySelector(".itinerary-btn");
     const popup = document.querySelector(".popup");
     const popupClose = document.querySelector(".popup-close");
+    const gate = document.querySelector(".gate");
+    const gateCard = document.querySelector(".gate-card");
+    const gateYes = document.querySelector(".gate-yes");
+    const gateNo = document.querySelector(".gate-no");
     let itineraryTimer = null;
     let itineraryUnlocked = false;
 
@@ -446,7 +517,26 @@
       icon.addEventListener("animationend", () => icon.remove());
     }
 
-    button.addEventListener("click", () => {
+    beMineBtn.addEventListener("click", () => {
+      gate.classList.add("is-open");
+      gate.setAttribute("aria-hidden", "false");
+    });
+
+    itineraryBtn.addEventListener("click", () => {
+      if (!itineraryUnlocked) {
+        return;
+      }
+      popup.classList.add("is-open");
+      popup.setAttribute("aria-hidden", "false");
+    });
+
+    gateYes.addEventListener("click", () => {
+      itineraryUnlocked = true;
+      gate.classList.remove("is-open");
+      gate.setAttribute("aria-hidden", "true");
+      gateNo.style.position = "";
+      gateNo.style.left = "";
+      gateNo.style.top = "";
       document.body.classList.add("bg-romance");
       if (yippee) {
         yippee.currentTime = 0;
@@ -467,16 +557,57 @@
       }, 5000);
     });
 
-    itineraryBtn.addEventListener("click", () => {
-      if (!itineraryUnlocked) {
-        const answer = window.prompt("The magic word:");
-        if (!answer || answer.toLowerCase() !== "yes") {
-          return;
-        }
-        itineraryUnlocked = true;
+    gateNo.addEventListener("click", () => {
+      moveNoButton();
+    });
+
+    gateNo.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      moveNoButton();
+    });
+
+    function moveNoButton() {
+      const actions = gateNo.parentElement;
+      if (!actions) return;
+      const actionsRect = actions.getBoundingClientRect();
+      const btnRect = gateNo.getBoundingClientRect();
+      const maxX = Math.max(0, actionsRect.width - btnRect.width);
+      const maxY = Math.max(0, actionsRect.height - btnRect.height);
+      const yesRect = gateYes.getBoundingClientRect();
+      const yesLeft = yesRect.left - actionsRect.left;
+      const yesTop = yesRect.top - actionsRect.top;
+      const yesRight = yesLeft + yesRect.width;
+      const yesBottom = yesTop + yesRect.height;
+
+      let nextX = 0;
+      let nextY = 0;
+      let attempts = 0;
+      do {
+        nextX = Math.floor(Math.random() * (maxX + 1));
+        nextY = Math.floor(Math.random() * (maxY + 1));
+        attempts += 1;
+        const noRight = nextX + btnRect.width;
+        const noBottom = nextY + btnRect.height;
+        const overlaps =
+          nextX < yesRight &&
+          noRight > yesLeft &&
+          nextY < yesBottom &&
+          noBottom > yesTop;
+        if (!overlaps) break;
+      } while (attempts < 12);
+      gateNo.style.position = "absolute";
+      gateNo.style.left = `${nextX}px`;
+      gateNo.style.top = `${nextY}px`;
+      gateCard.classList.remove("shake");
+      void gateCard.offsetWidth;
+      gateCard.classList.add("shake");
+    }
+
+    gate.addEventListener("click", (event) => {
+      if (event.target === gate) {
+        gate.classList.remove("is-open");
+        gate.setAttribute("aria-hidden", "true");
       }
-      popup.classList.add("is-open");
-      popup.setAttribute("aria-hidden", "false");
     });
 
     popupClose.addEventListener("click", () => {
