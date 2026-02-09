@@ -96,6 +96,81 @@
       transform-origin: 50% 60%;
     }
 
+    .flower {
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      opacity: 0.9;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+      z-index: 2;
+    }
+
+    .flower-left {
+      bottom: 12px;
+      left: 16px;
+      transform: rotate(-6deg) scale(0.95);
+    }
+
+    .flower-right {
+      bottom: 10px;
+      right: 18px;
+      transform: rotate(7deg) scale(0.95);
+    }
+
+    .flower .petals {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border-radius: 50%;
+      filter: drop-shadow(0 6px 10px rgba(10, 4, 6, 0.35));
+      transform: scale(0.25);
+      opacity: 0.3;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+    }
+
+    .flower .petals::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 37px;
+      top: 37px;
+      border-radius: 50%;
+      background: #ffd6e1;
+      box-shadow:
+        0 -24px 0 #ffc3d3,
+        0 24px 0 #ffd0de,
+        24px 0 0 #ffc3d3,
+        -24px 0 0 #ffc3d3,
+        18px -18px 0 #ffd6e1,
+        -18px -18px 0 #ffd0de,
+        18px 18px 0 #ffd0de,
+        -18px 18px 0 #ffd6e1;
+    }
+
+    .flower .bud {
+      position: absolute;
+      display: block;
+      width: 18px;
+      height: 18px;
+      left: 39px;
+      top: 39px;
+      border-radius: 50%;
+      background: #ffd2dc;
+      border: 2px solid rgba(255, 157, 177, 0.7);
+      box-shadow: 0 4px 8px rgba(10, 4, 6, 0.25);
+      transition: transform 0.8s ease;
+    }
+
+    body.bloomed .flower .petals {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+
+    body.bloomed .flower .bud {
+      transform: scale(0.6);
+    }
+
     .bg-top-left {
       top: 18px;
       left: 18px;
@@ -399,6 +474,19 @@
         opacity: 0.65;
       }
 
+      .flower {
+        width: 76px;
+        height: 76px;
+        opacity: 0.65;
+      }
+
+      .flower .bud {
+        width: 14px;
+        height: 14px;
+        left: 31px;
+        top: 31px;
+      }
+
       .bg-top-left {
         top: 10px;
         left: 12px;
@@ -435,6 +523,14 @@
       <img src="doggo.png" alt="" class="bg-top-right rock rock-reverse">
       <img src="doggo.png" alt="" class="bg-bottom-left rock">
       <img src="elgato.png" alt="" class="bg-bottom-right rock rock-reverse">
+      <div class="flower flower-left">
+        <span class="petals"></span>
+        <span class="bud"></span>
+      </div>
+      <div class="flower flower-right">
+        <span class="petals"></span>
+        <span class="bud"></span>
+      </div>
     </div>
     <div class="card-content">
       <p>To my Dearest Kim<p>
@@ -537,6 +633,7 @@
       gateNo.style.position = "";
       gateNo.style.left = "";
       gateNo.style.top = "";
+      document.body.classList.add("bloomed");
       document.body.classList.add("bg-romance");
       if (yippee) {
         yippee.currentTime = 0;
